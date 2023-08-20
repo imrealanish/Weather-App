@@ -1,20 +1,54 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
-  </ion-toolbar>
+  <header>
+    <div class="refershBtn" (click)="rotate()" [class.rotate-center]="rotateClass">
+      <ion-icon name="refresh-outline"></ion-icon>
+    </div>
+    <h3 class="title">Weather</h3>
+    <div class="searchBtn" (click)="searchDialog=true;city=''">
+      <ion-icon name="search-outline"></ion-icon>
+    </div>
+  </header>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" >
+  <main *ngIf="!loading">
+    <div class="mainContainer">
+      <figure>
+        <img src="../../assets/sun.png" alt="">
+      </figure>
+      <!-- <h1>{{res?.main.temp - 273.15 }} °C</h1> -->
+      <h1>{{res?.main.temp | kelToCel:res?.main.temp}} °C</h1>
+      <h2>{{city | titlecase}}</h2>
+      <span>{{res?.weather[0].description | titlecase}}</span>
+    </div>
+    <div class="otherDetails">
+      <div class="detailBox">
+        <span class="detailTitle">Humidity</span>
+        <span class="detailValue">{{res?.main.humidity}}</span>
+      </div>
+      <div class="detailBox">
+        <span class="detailTitle">Sunrise</span>
+        <span class="detailValue">{{res?.sys.sunrise* 1000 | date:'HH:mm'}} AM</span>
+      </div>
+      <div class="detailBox">
+        <span class="detailTitle">Sun Set</span>
+        <span class="detailValue">{{res?.sys.sunset * 1000 | date:'HH:mm'}} PM</span>
+      </div>
+    </div>
+  </main>
+  <div class="center"  *ngIf="loading">
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+    <p-progressSpinner></p-progressSpinner>
   </div>
+
 </ion-content>
+<p-dialog header="Title" [(visible)]="searchDialog" [style]="{width: '100vw',minHeight:'100vh'}">
+  <form #weatherForm="ngForm">
+    <div class="searchBox">
+      <div class="search">
+        <ion-icon name="search-outline"></ion-icon>
+        <input type="search" placeholder="Enter City Name" name="city" [(ngModel)]="city" autofocus (keydown.enter)="getLocationWeather(weatherForm)">
+      </div>
+    </div>
+  </form>
+</p-dialog>

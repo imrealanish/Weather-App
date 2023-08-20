@@ -5,15 +5,19 @@ import { FormsModule } from '@angular/forms';
 import { HomePage } from './home.page';
 
 import { HomePageRoutingModule } from './home-routing.module';
-
+import { DialogModule } from 'primeng/dialog';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { KelToCelPipe } from '../kel-to-cel.pipe';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    HomePageRoutingModule
+    HomePageRoutingModule,
+    DialogModule,
+    ProgressSpinnerModule,
   ],
-  declarations: [HomePage]
+  declarations: [HomePage, KelToCelPipe]
 })
-export class HomePageModule {}
+export class HomePageModule { }
